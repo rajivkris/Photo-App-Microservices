@@ -40,6 +40,17 @@ public class UserManagementService implements UserDetailsService {
 		UserDTO resDto = mapper.map(userEntity, UserDTO.class);
 		return resDto;
 	}
+	
+	public UserDTO fetchByUsername(String name) {
+		final UserEntity user = userRepo.findByEmail(name);
+		if (user == null) {
+			throw new UsernameNotFoundException("The user " + name + " doesnot exist");
+		}
+		
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		return mapper.map(user, UserDTO.class);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
