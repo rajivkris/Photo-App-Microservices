@@ -31,7 +31,7 @@ public class UserServiceController {
 	
 	@GetMapping("/status")
 	public String status() {
-		return "I am working at the port : " + env.getProperty("local.server.port");
+		return "The secret key used is "  + env.getProperty("secret.key"); 
 	}
 	
 	@PostMapping("/user/create")

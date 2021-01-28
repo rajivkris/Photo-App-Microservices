@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		final UserPassFilter filter = new UserPassFilter(userService, env);
 		try {
 			filter.setAuthenticationManager(authenticationManager());
-			filter.setFilterProcessesUrl("/user/login");
+			filter.setFilterProcessesUrl(env.getProperty("login.path"));
 			return filter;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
