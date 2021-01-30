@@ -9,5 +9,7 @@ import com.rajiv.microservices.users.usersservice.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	
 	UserEntity findByEmail(String email);
+	
+	UserEntity findByUserId(String userId);
 
 }

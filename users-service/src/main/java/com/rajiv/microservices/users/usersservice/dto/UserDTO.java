@@ -1,8 +1,11 @@
 package com.rajiv.microservices.users.usersservice.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class UserDTO implements Serializable{
+import com.rajiv.microservices.users.usersservice.response.model.AlbumsResponseModel;
+
+public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String firstName;
@@ -11,6 +14,7 @@ public class UserDTO implements Serializable{
 	private String userId;
 	private String encrptPassword;
 	private String password;
+	private List<AlbumsResponseModel> albumsRes;
 
 	public String getFirstName() {
 		return firstName;
@@ -58,5 +62,13 @@ public class UserDTO implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<AlbumsResponseModel> getAlbumsRes() {
+		return albumsRes;
+	}
+
+	public void setAlbumsRes(List<AlbumsResponseModel> albumsRes) {
+		this.albumsRes = albumsRes;
 	}
 }

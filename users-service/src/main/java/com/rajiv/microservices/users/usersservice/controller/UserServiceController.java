@@ -3,12 +3,13 @@ package com.rajiv.microservices.users.usersservice.controller;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,19 +30,28 @@ public class UserServiceController {
 	@Autowired
 	private UserManagementService userService;
 	
+	@Autowired
+	private ModelMapper mapper;
+	
 	@GetMapping("/status")
 	public String status() {
 		return "The secret key used is "  + env.getProperty("secret.key"); 
 	}
 	
-	@PostMapping("/user/create")
+	@PostMapping(value =  "/user/create", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public  ResponseEntity<UserResponseModel> createUser(@Valid @RequestBody UserRequestModel request) {
-		final ModelMapper mapper = new ModelMapper();
-		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		UserDTO reqDto = mapper.map(request, UserDTO.class);
 		UserDTO resDto = userService.createUser(reqDto);
 		final UserResponseModel resModel =  mapper.map(resDto, UserResponseModel.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(resModel);
 	}
+	
+	@GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserResponseModel> getUser(@PathVariable String userId) {
+		final UserDTO dto = userService.fetchByUserId(userId);
+		final UserResponseModel model = mapper.map(dto, UserResponseModel.class);
+		return ResponseEntity.status(HttpStatus.OK).body(model);
+	}
+	
 
 }
