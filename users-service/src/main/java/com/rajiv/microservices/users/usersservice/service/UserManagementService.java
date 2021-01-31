@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +26,8 @@ import com.rajiv.microservices.users.usersservice.response.model.AlbumsResponseM
 
 @Service
 public class UserManagementService implements UserDetailsService {
+	
+	private static final Logger log = LoggerFactory.getLogger(UserManagementService.class); 
 
 	private UserRepository userRepo;
 	
@@ -79,7 +80,10 @@ public class UserManagementService implements UserDetailsService {
 		//final ResponseEntity<List<AlbumsResponseModel>> response = restTemplate.exchange(albumsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumsResponseModel>>() {
 		//});
 		
+		log.info("Befor making call to Albums microservice");
 		final List<AlbumsResponseModel> albumsResponse = feignClient.getAlbums(userId);
+		log.info("After making call to Albums microservice");
+		
 		dto.setAlbumsRes(albumsResponse);
 		return dto;
 	}

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -31,9 +32,11 @@ public class UserPassFilter extends UsernamePasswordAuthenticationFilter {
 	private Environment env;
 
 	@Autowired
-	public UserPassFilter(UserManagementService userService, Environment env) {
+	public UserPassFilter(UserManagementService userService, Environment env, AuthenticationManager authenticationManager) {
 		this.userService = userService;
 		this.env = env;
+		this.setAuthenticationManager(authenticationManager);
+		this.setFilterProcessesUrl("/users/login");
 	}
 
 	@Override

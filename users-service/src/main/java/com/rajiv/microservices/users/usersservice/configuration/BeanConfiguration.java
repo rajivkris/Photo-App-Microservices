@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import feign.Logger;
+
 @Configuration
 public class BeanConfiguration {
 
@@ -21,5 +23,10 @@ public class BeanConfiguration {
 	@LoadBalanced
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
+	}
+	
+	@Bean
+	public Logger.Level getFeignLogger() {
+		return Logger.Level.FULL;
 	}
 }
